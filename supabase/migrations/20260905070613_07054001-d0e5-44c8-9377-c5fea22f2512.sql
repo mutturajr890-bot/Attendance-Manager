@@ -1,0 +1,1 @@
+ALTER TABLE public.colleges ADD COLUMN IF NOT EXISTS academic_year text NOT NULL DEFAULT '';
