@@ -9,9 +9,6 @@ import tailwindcss from "@tailwindcss/vite";
 // src/server.ts is kept as the custom SSR entry, matching the app's
 // existing error-handling wrapper.
 export default defineConfig({
-  server: {
-    allowedHosts: ["breezy-attend.onrender.com"],
-  },
   plugins: [
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
