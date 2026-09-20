@@ -16,6 +16,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as HolidaysRouteImport } from './routes/holidays'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as VerifiedRouteImport } from './routes/verified'
 import { Route as BranchBranchIdRouteImport } from './routes/branch.$branchId'
 import { Route as ClassClassIdRouteImport } from './routes/class.$classId'
 import { Route as CollegeCollegeIdRouteImport } from './routes/college.$collegeId'
@@ -55,6 +56,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifiedRoute = VerifiedRouteImport.update({
+  id: '/verified',
+  path: '/verified',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BranchBranchIdRoute = BranchBranchIdRouteImport.update({
   id: '/branch/$branchId',
   path: '/branch/$branchId',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/holidays': typeof HolidaysRoute
   '/profile': typeof ProfileRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/verified': typeof VerifiedRoute
   '/branch/$branchId': typeof BranchBranchIdRoute
   '/class/$classId': typeof ClassClassIdRoute
   '/college/$collegeId': typeof CollegeCollegeIdRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/holidays': typeof HolidaysRoute
   '/profile': typeof ProfileRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/verified': typeof VerifiedRoute
   '/branch/$branchId': typeof BranchBranchIdRoute
   '/class/$classId': typeof ClassClassIdRoute
   '/college/$collegeId': typeof CollegeCollegeIdRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/holidays': typeof HolidaysRoute
   '/profile': typeof ProfileRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/verified': typeof VerifiedRoute
   '/branch/$branchId': typeof BranchBranchIdRoute
   '/class/$classId': typeof ClassClassIdRoute
   '/college/$collegeId': typeof CollegeCollegeIdRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/holidays'
     | '/profile'
     | '/reset-password'
+    | '/verified'
     | '/branch/$branchId'
     | '/class/$classId'
     | '/college/$collegeId'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/holidays'
     | '/profile'
     | '/reset-password'
+    | '/verified'
     | '/branch/$branchId'
     | '/class/$classId'
     | '/college/$collegeId'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/holidays'
     | '/profile'
     | '/reset-password'
+    | '/verified'
     | '/branch/$branchId'
     | '/class/$classId'
     | '/college/$collegeId'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   HolidaysRoute: typeof HolidaysRoute
   ProfileRoute: typeof ProfileRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  VerifiedRoute: typeof VerifiedRoute
   BranchBranchIdRoute: typeof BranchBranchIdRoute
   ClassClassIdRoute: typeof ClassClassIdRoute
   CollegeCollegeIdRoute: typeof CollegeCollegeIdRoute
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verified': {
+      id: '/verified'
+      path: '/verified'
+      fullPath: '/verified'
+      preLoaderRoute: typeof VerifiedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/branch/$branchId': {
       id: '/branch/$branchId'
       path: '/branch/$branchId'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   HolidaysRoute: HolidaysRoute,
   ProfileRoute: ProfileRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  VerifiedRoute: VerifiedRoute,
   BranchBranchIdRoute: BranchBranchIdRoute,
   ClassClassIdRoute: ClassClassIdRoute,
   CollegeCollegeIdRoute: CollegeCollegeIdRoute,
