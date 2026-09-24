@@ -85,7 +85,7 @@ function AuthPage() {
     }
     setStep("code");
     setResendSeconds(60);
-    toast.success("We emailed you a 6-digit code.");
+    toast.success("We emailed you a code.");
   }
 
   async function verifyCode(e: React.FormEvent) {
@@ -128,7 +128,7 @@ function AuthPage() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}/verified`,
         data: { full_name: fullName },
       },
     });
