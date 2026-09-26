@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, Info, Pencil } from "lucide-react";
+import { Download, Info, Pencil, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
@@ -57,6 +57,7 @@ function ClassPage() {
   const [editingDates, setEditingDates] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [scheduleSearch, setScheduleSearch] = useState("");
   const [detailId, setDetailId] = useState<string | null>(null);
   const [editingStudent, setEditingStudent] = useState(false);
   const [editName, setEditName] = useState("");
@@ -184,6 +185,12 @@ function ClassPage() {
     }
     return out;
   }, [klass, markedDates]);
+
+  /** Schedule table filtered down to a single searched date, if any. */
+  const visibleScheduleDays = useMemo(() => {
+    if (!scheduleSearch) return scheduleDays;
+    return scheduleDays.filter((d) => d === scheduleSearch);
+  }, [scheduleDays, scheduleSearch]);
 
   const monthlyRows = useMemo(() => {
     const days = markedDates.filter((d) => d.startsWith(month));
@@ -437,14 +444,45 @@ function ClassPage() {
           {students.length === 0 ? (
             <EmptyStudents branchId={klass?.branch_id} />
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-border bg-card">
+            <>
+              <div className="flex items-end gap-2 rounded-2xl border border-border bg-card p-3">
+                <div className="flex-1 space-y-1.5">
+                  <Label htmlFor="schedule-search">Search a date</Label>
+                  <Input
+                    id="schedule-search"
+                    type="date"
+                    value={scheduleSearch}
+                    onChange={(e) => setScheduleSearch(e.target.value)}
+                  />
+                </div>
+                {scheduleSearch ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setScheduleSearch("")}
+                  >
+                    Clear
+                  </Button>
+                ) : (
+                  <Button type="button" variant="outline" disabled className="gap-1.5">
+                    <Search className="size-4" /> Search
+                  </Button>
+                )}
+              </div>
+
+              {visibleScheduleDays.length === 0 ? (
+                <div className="rounded-2xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+                  No class was scheduled on that date.
+                </div>
+              ) : (
+              <div className="overflow-x-auto rounded-2xl border border-border bg-card">
               <table className="w-full text-xs">
                 <thead className="bg-secondary/60 text-left">
                   <tr>
                     <th className="sticky left-0 bg-secondary/60 px-3 py-2 font-semibold">
                       Student
                     </th>
-                    {scheduleDays.map((d) => (
+                    {visibleScheduleDays.map((d) => (
                       <th key={d} className="whitespace-nowrap px-2 py-2 font-semibold">
                         {d.slice(5)}
                       </th>
@@ -457,7 +495,7 @@ function ClassPage() {
                     <td className="sticky left-0 whitespace-nowrap bg-card px-3 py-2 font-medium">
                       {s.name}
                     </td>
-                      {scheduleDays.map((d) => {
+                      {visibleScheduleDays.map((d) => {
                         const st = statusFor(s.id, d);
                         return (
                           <td key={d} className="px-2 py-2 text-center">
@@ -484,7 +522,9 @@ function ClassPage() {
                   ))}
                 </tbody>
               </table>
-            </div>
+              </div>
+              )}
+            </>
           )}
         </TabsContent>
 
